@@ -1,0 +1,130 @@
+rules:
+  # --- Kernel Modules ---
+  - id: LIN-FS-01
+    title: "Ensure cramfs kernel module is not available"
+    os: linux
+    category: "Filesystem"
+    check_type: kernel_module
+    check_target: cramfs
+    check_value: disabled
+
+  - id: LIN-FS-02
+    title: "Ensure freevxfs kernel module is not available"
+    os: linux
+    category: "Filesystem"
+    check_type: kernel_module
+    check_target: freevxfs
+    check_value: disabled
+
+  - id: LIN-FS-03
+    title: "Ensure hfs kernel module is not available"
+    os: linux
+    category: "Filesystem"
+    check_type: kernel_module
+    check_target: hfs
+    check_value: disabled
+
+  - id: LIN-FS-04
+    title: "Ensure hfsplus kernel module is not available"
+    os: linux
+    category: "Filesystem"
+    check_type: kernel_module
+    check_target: hfsplus
+    check_value: disabled
+
+  - id: LIN-FS-05
+    title: "Ensure jffs2 kernel module is not available"
+    os: linux
+    category: "Filesystem"
+    check_type: kernel_module
+    check_target: jffs2
+    check_value: disabled
+
+  - id: LIN-FS-06
+    title: "Ensure overlayfs kernel module is not available"
+    os: linux
+    category: "Filesystem"
+    check_type: kernel_module
+    check_target: overlay
+    check_value: disabled
+
+  - id: LIN-FS-07
+    title: "Ensure squashfs kernel module is not available"
+    os: linux
+    category: "Filesystem"
+    check_type: kernel_module
+    check_target: squashfs
+    check_value: disabled
+
+  - id: LIN-FS-08
+    title: "Ensure udf kernel module is not available"
+    os: linux
+    category: "Filesystem"
+    check_type: kernel_module
+    check_target: udf
+    check_value: disabled
+
+  - id: LIN-FS-09
+    title: "Ensure usb-storage kernel module is not available"
+    os: linux
+    category: "Filesystem"
+    check_type: kernel_module
+    check_target: usb-storage
+    check_value: disabled
+
+  # --- Mount Points ---
+  - id: LIN-FS-10
+    title: "Configure /tmp partition"
+    os: linux
+    category: "Filesystem Partitions"
+    check_type: mount_point
+    check_target: /tmp
+    check_value: "separate,nodev,nosuid,noexec"
+
+  - id: LIN-FS-11
+    title: "Configure /dev/shm partition"
+    os: linux
+    category: "Filesystem Partitions"
+    check_type: mount_point
+    check_target: /dev/shm
+    check_value: "separate,nodev,nosuid,noexec"
+
+  - id: LIN-FS-12
+    title: "Configure /home partition"
+    os: linux
+    category: "Filesystem Partitions"
+    check_type: mount_point
+    check_target: /home
+    check_value: "separate,nodev,nosuid"
+
+  - id: LIN-FS-13
+    title: "Configure /var partition"
+    os: linux
+    category: "Filesystem Partitions"
+    check_type: mount_point
+    check_target: /var
+    check_value: "separate,nodev,nosuid"
+
+  - id: LIN-FS-14
+    title: "Configure /var/tmp partition"
+    os: linux
+    category: "Filesystem Partitions"
+    check_type: mount_point
+    check_target: /var/tmp
+    check_value: "separate,nodev,nosuid,noexec"
+
+  - id: LIN-FS-15
+    title: "Configure /var/log partition"
+    os: linux
+    category: "Filesystem Partitions"
+    check_type: mount_point
+    check_target: /var/log
+    check_value: "separate,nodev,nosuid,noexec"
+
+  - id: LIN-FS-16
+    title: "Configure /var/log/audit partition"
+    os: linux
+    category: "Filesystem Partitions"
+    check_type: mount_point
+    check_target: /var/log/audit
+    check_value: "separate,nodev,nosuid,noexec"

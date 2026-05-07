@@ -1,0 +1,26 @@
+package engine
+
+type Rule struct {
+	ID          string    `json:"id" yaml:"id"`
+	Title       string    `json:"title" yaml:"title"`
+	Description string    `json:"description" yaml:"description"`
+	OS          string    `json:"os" yaml:"os"`
+	Severity    string    `json:"severity" yaml:"severity"`
+	Category    string    `json:"category" yaml:"category"`
+
+	CheckType   CheckType `json:"check_type" yaml:"check_type"`
+	CheckTarget string    `json:"check_target" yaml:"check_target"`
+	CheckValue  string    `json:"check_value" yaml:"check_value"`
+}
+
+type CheckType string
+
+const (
+	CheckTypeKernelModule CheckType = "kernel_module"
+	CheckTypeMountPoint   CheckType = "mount_point"
+
+	// on waiting
+	CheckTypeSysctl       CheckType = "sysctl"      
+	CheckTypeFileRegex    CheckType = "file_regex"  
+	CheckTypeFilePerm     CheckType = "file_perm"   
+)
