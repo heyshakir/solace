@@ -20,11 +20,37 @@ func main() {
 	fmt.Printf("✔ operating system detection: %s\n", osEngine.GetOSName())
 
 	// hardening 
-	hEngine := engine.NewHardeningEngine()
-	mockRules := hEngine.LoadMockRules() // to be updated.
+	hEngine := engine.NewHardeningEngine(osEngine)
 
-	fmt.Printf("✔ hardening engine initialized.\n")
-	fmt.Printf("✔ Loaded %d mock rules successfully.\n", len(mockRules))
-	
+		err = hEngine.LoadRules("rules/linux")
+	if err != nil {
+		log.Fatalf("✖ Failed to load rules: %v\n", err)
+	}
+	fmt.Println("✔ YAML Rules loaded successuflly.")
 	fmt.Println("--------------------------------------------------")
+	
+	// 
+	fmt.Println("evaluating...")
+	results := hEngine.EvaluateRules()
+
+	passed := 0
+	failed := 0
+
+	// print results.
+	fmt.Printf("\n%-12s | %-10s | %s\n", "RULE ID", "STATUS", "MESSAGE")
+	fmt.Println("-------------------------------------------------------------------------")
+	for _, res := range results {
+		if res.Status == "Passed" {
+			passed++
+			fmt.Printf("\033[32m%-12s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
+		} else if res.Status == "Failed" {
+			failed++
+			fmt.Printf("\033[31m%-12s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
+		} else {
+			fmt.Printf("\033[33m%-12s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
+		}
+	}
+
+	fmt.Println("-------------------------------------------------------------------------")
+	fmt.Printf("AUDIT COMPLETE: %d Passed | %d Failed\n", passed, failed)
 }

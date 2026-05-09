@@ -1,5 +1,9 @@
 package engine
 
+type RuleFile struct {
+	Rules []Rule `yaml:"rules"`
+}
+
 type Rule struct {
 	ID          string    `json:"id" yaml:"id"`
 	Title       string    `json:"title" yaml:"title"`
@@ -13,14 +17,21 @@ type Rule struct {
 	CheckValue  string    `json:"check_value" yaml:"check_value"`
 }
 
+type Result struct {
+	RuleID        string `json:"rule_id"`
+	Title         string `json:"title"`
+	Status        string `json:"status"` // pass, fail, error, skipped
+	CurrentValue  string `json:"current_value"`
+	ExpectedValue string `json:"expected_value"`
+	Message       string `json:"message"`
+}
+
 type CheckType string
 
 const (
 	CheckTypeKernelModule CheckType = "kernel_module"
 	CheckTypeMountPoint   CheckType = "mount_point"
-
-	// on waiting
-	CheckTypeSysctl       CheckType = "sysctl"      
-	CheckTypeFileRegex    CheckType = "file_regex"  
-	CheckTypeFilePerm     CheckType = "file_perm"   
+	CheckTypeSysctl       CheckType = "sysctl"
+	CheckTypeFileRegex    CheckType = "file_regex"
+	CheckTypeFilePerm     CheckType = "file_perm"
 )
