@@ -82,3 +82,8 @@ func (l *linuxEngine) CheckMountPoint(targetPath string) (bool, []string, error)
 	}
 	return false, nil, nil
 }
+
+// dummy implementation for Linux to satisfy interface
+func (l *linuxEngine) GetSeceditValue(key string) (string, error) {
+	return "", fmt.Errorf("secedit not supported on linux")
+}

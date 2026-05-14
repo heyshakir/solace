@@ -8,3 +8,8 @@ Zero Dependencies: Compiles to a single static binary.
 Cross-Platform: Native support for Windows server and Linux.
 Data-Driven Rules: Hardening checks (Annexure A & B) are defined in YAML.
 Rollback Capabilities: Stores pre-hardening system states for safe configuration rollbacks.
+
+## Usage
+
+### Build for windows:
+```go build -ldflags="-s -w" -o bin\solace.exe .\cmd\toolkit\main.go```

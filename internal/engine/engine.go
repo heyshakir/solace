@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"strconv"
 
 	"solace/internal/osops"
 	"gopkg.in/yaml.v3"
@@ -65,8 +66,8 @@ func (e *HardeningEngine) EvaluateRules() []Result {
 		}
 
 		if strings.ToLower(rule.OS) != currentOS {
-			result.Message = fmt.Sprintf("Rule is for %s, skipping on %s", rule.OS, currentOS)
-			results = append(results, result)
+			// result.Message = fmt.Sprintf("Rule is for %s, skipping on %s", rule.OS, currentOS)
+			result.Message = "OS mismatch, skipping."
 			continue
 		}
 
@@ -87,7 +88,8 @@ func (e *HardeningEngine) EvaluateRules() []Result {
 				result.CurrentValue = "disabled"
 				result.Message = fmt.Sprintf("Secure: Module %s is not active.", rule.CheckTarget)
 			}
-
+		
+		// For linux, we will check if critical mount points have secure options like noexec, nodev, nosuid.
 		case CheckTypeMountPoint:
 			isSeparate, options, err := e.osEngine.CheckMountPoint(rule.CheckTarget)
 			if err != nil {
@@ -120,6 +122,34 @@ func (e *HardeningEngine) EvaluateRules() []Result {
 					result.CurrentValue = strings.Join(options, ",")
 					result.Message = "Partition exists with all required secure mount options."
 				}
+			}
+		
+		// For windows, we will use secedit to check security policies.
+		case CheckTypeSecedit:
+			actualVal, err := e.osEngine.GetSeceditValue(rule.CheckTarget)
+			if err != nil {
+					result.Status = "Error"
+					result.Message = err.Error()
+					break
+			}
+			result.CurrentValue = actualVal
+			// For numeric policies, we need to compare integers. For others, we can do string comparison.
+			actualInt, _ := strconv.Atoi(actualVal)
+			expectedInt, _ := strconv.Atoi(rule.CheckValue)
+			passed := false
+			if rule.CheckTarget == "PasswordHistorySize" || rule.CheckTarget == "MinimumPasswordLength" || rule.CheckTarget == "LockoutDuration" {
+					passed = actualInt >= expectedInt
+			} else if rule.CheckTarget == "MaximumPasswordAge" || rule.CheckTarget == "LockoutBadCount" {
+					passed = actualInt > 0 && actualInt <= expectedInt
+			} else {
+					passed = actualInt == expectedInt
+			}
+			if passed {
+					result.Status = "Passed"
+					result.Message = "Policy meets requirement"
+			} else {
+					result.Status = "Failed"
+					result.Message = "Policy does not meet requirement"
 			}
 
 		default:

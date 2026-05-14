@@ -12,6 +12,9 @@ type OSEngine interface {
 	// linux specific
 	CheckKernelModuleLoaded(moduleName string) (bool, error)
 	CheckMountPoint(path string) (isSeparate bool, options []string, err error)
+
+	// windows specific
+	GetSeceditValue(key string) (string, error)
 }
 
-var ErrUnsupportedOS = errors.New("operating system not supported by this toolkit")
+var ErrUnsupportedOS = errors.New("unsupported operating system")

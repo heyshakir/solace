@@ -34,4 +34,7 @@ const (
 	CheckTypeSysctl       CheckType = "sysctl"
 	CheckTypeFileRegex    CheckType = "file_regex"
 	CheckTypeFilePerm     CheckType = "file_perm"
+
+	// windows specific
+	CheckTypeSecedit      CheckType = "secedit"
 )

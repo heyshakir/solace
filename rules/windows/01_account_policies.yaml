@@ -1,0 +1,64 @@
+rules:
+  - id: WIN-ACC-01
+    title: "Ensure 'Enforce password history' is set to '24 or more password(s)'"
+    os: windows
+    category: "Password Policy"
+    check_type: secedit
+    check_target: PasswordHistorySize
+    check_value: "24"
+
+  - id: WIN-ACC-02
+    title: "Ensure 'Maximum password age' is set to '90 days, but not 0'"
+    os: windows
+    category: "Password Policy"
+    check_type: secedit
+    check_target: MaximumPasswordAge
+    check_value: "90"
+
+  - id: WIN-ACC-03
+    title: "Ensure 'Minimum password age' is set to '1 day'"
+    os: windows
+    category: "Password Policy"
+    check_type: secedit
+    check_target: MinimumPasswordAge
+    check_value: "1"
+
+  - id: WIN-ACC-04
+    title: "Ensure 'Minimum password length' is set to '12 or more character(s)'"
+    os: windows
+    category: "Password Policy"
+    check_type: secedit
+    check_target: MinimumPasswordLength
+    check_value: "12"
+
+  - id: WIN-ACC-05
+    title: "Ensure 'Password must meet complexity requirements' is set to 'Enabled'"
+    os: windows
+    category: "Password Policy"
+    check_type: secedit
+    check_target: PasswordComplexity
+    check_value: "1"
+
+  - id: WIN-ACC-06
+    title: "Ensure 'Store passwords using reversible encryption' is set to 'Disabled'"
+    os: windows
+    category: "Password Policy"
+    check_type: secedit
+    check_target: ClearTextPassword
+    check_value: "0"
+
+  - id: WIN-ACC-07
+    title: "Ensure 'Account lockout duration' is set to '15 or more minute(s)'"
+    os: windows
+    category: "Account Lockout Policy"
+    check_type: secedit
+    check_target: LockoutDuration
+    check_value: "15"
+
+  - id: WIN-ACC-08
+    title: "Ensure 'Account lockout threshold' is set to '5 or fewer invalid logon attempt(s)'"
+    os: windows
+    category: "Account Lockout Policy"
+    check_type: secedit
+    check_target: LockoutBadCount
+    check_value: "5"

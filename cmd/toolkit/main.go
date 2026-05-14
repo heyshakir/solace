@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"path/filepath" // for forward/backward slash compatibility
 
 	"solace/internal/engine"
 	"solace/internal/osops"
@@ -22,14 +23,18 @@ func main() {
 	// hardening 
 	hEngine := engine.NewHardeningEngine(osEngine)
 
-		err = hEngine.LoadRules("rules/linux")
+	rulesPath := filepath.Join("rules", "linux")
+	if osEngine.GetOSName() == "Windows" {
+		rulesPath = filepath.Join("rules", "windows")
+	}
+
+	err = hEngine.LoadRules(rulesPath)
 	if err != nil {
 		log.Fatalf("✖ Failed to load rules: %v\n", err)
 	}
 	fmt.Println("✔ YAML Rules loaded successuflly.")
 	fmt.Println("--------------------------------------------------")
 	
-	// 
 	fmt.Println("evaluating...")
 	results := hEngine.EvaluateRules()
 
@@ -37,17 +42,17 @@ func main() {
 	failed := 0
 
 	// print results.
-	fmt.Printf("\n%-12s | %-10s | %s\n", "RULE ID", "STATUS", "MESSAGE")
+	fmt.Printf("\n%-15s | %-10s | %s\n", "RULE ID", "STATUS", "MESSAGE")
 	fmt.Println("-------------------------------------------------------------------------")
 	for _, res := range results {
 		if res.Status == "Passed" {
 			passed++
-			fmt.Printf("\033[32m%-12s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
+			fmt.Printf("✔ %-13s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
 		} else if res.Status == "Failed" {
 			failed++
-			fmt.Printf("\033[31m%-12s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
+			fmt.Printf("✖ %-13s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
 		} else {
-			fmt.Printf("\033[33m%-12s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
+			fmt.Printf("⚠ %-13s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
 		}
 	}
 

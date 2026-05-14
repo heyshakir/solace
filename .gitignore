@@ -1,6 +1,4 @@
-/bin/*.exe 
-/bin/*.out 
-/bin/*.app
-
 /web/dist/
 /web/node_modules/
+
+/bin
