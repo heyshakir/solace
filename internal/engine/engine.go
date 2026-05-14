@@ -187,10 +187,10 @@ func (e *HardeningEngine) EvaluateRules() []Result {
 				result.CurrentValue = status
 				if status == rule.CheckValue || (rule.CheckValue == "disabled" && (status == "stopped" || status == "not_found")) {
 					result.Status = "Passed"
-					result.Message = fmt.Sprintf("Service is %s", status)
+					result.Message = fmt.Sprintf("%s Service is %s", rule.CheckTarget, status)
 				} else {
 					result.Status = "Failed"
-					result.Message = fmt.Sprintf("Service is %s (Expected: %s)", status, rule.CheckValue)
+					result.Message = fmt.Sprintf("%s Service is %s (Expected: %s)", rule.CheckTarget, status, rule.CheckValue)
 				}
 			}
 			

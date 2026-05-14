@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+	"os/exec"
 	"strings"
 )
 
@@ -83,6 +84,21 @@ func (l *linuxEngine) CheckMountPoint(targetPath string) (bool, []string, error)
 	return false, nil, nil
 }
 
+func (l *linuxEngine) CheckServiceStatus(name string) (string, error) {
+	// Using systemctl
+	cmd := exec.Command("systemctl", "is-active", name)
+	out, _ := cmd.Output()
+	status := strings.TrimSpace(string(out))
+	if status == "active" {
+		return "running", nil
+	}
+	// check if failed or unknown
+	if strings.Contains(status, "unknown") || strings.Contains(status, "not-found") {
+		return "not_found", nil
+	}
+	return "stopped", nil
+}
+
 // dummy implementation for Linux to satisfy interface
 func (l *linuxEngine) GetSeceditValue(key string) (string, error) {
 	return "", fmt.Errorf("secedit not supported on linux")
@@ -91,7 +107,3 @@ func (l *linuxEngine) GetSeceditValue(key string) (string, error) {
 func (l *linuxEngine) GetRegistryValue(path string, key string) (string, error) {
 	return "", fmt.Errorf("registry not supported on linux")
 }
-
-func (l *linuxEngine) CheckServiceStatus(serviceName string) (string, error) {
-	return "", fmt.Errorf("service status check not implemented for linux yet")
-} // Please implement this for linux.

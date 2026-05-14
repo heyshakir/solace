@@ -1,0 +1,32 @@
+rules:
+  - id: LIN-SRV-01
+    title: "Ensure autofs services are not in use"
+    os: linux
+    category: "Services"
+    check_type: service
+    check_target: autofs
+    check_value: disabled
+
+  - id: LIN-SRV-02
+    title: "Ensure avahi-daemon services are not in use"
+    os: linux
+    category: "Services"
+    check_type: service
+    check_target: avahi-daemon
+    check_value: disabled
+
+  - id: LIN-SRV-06
+    title: "Ensure ftp server services are not in use"
+    os: linux
+    category: "Services"
+    check_type: service
+    check_target: vsftpd
+    check_value: disabled
+
+  - id: LIN-SRV-18
+    title: "Ensure web server services are not in use"
+    os: linux
+    category: "Services"
+    check_type: service
+    check_target: apache2
+    check_value: disabled
