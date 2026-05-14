@@ -1,0 +1,40 @@
+rules:
+  - id: WIN-SRV-01
+    title: "Ensure Bluetooth Audio Gateway Service is disabled"
+    os: windows
+    category: "System Services"
+    check_type: service
+    check_target: BTAGService
+    check_value: disabled
+
+  - id: WIN-SRV-02
+    title: "Ensure Bluetooth Support Service is disabled"
+    os: windows
+    category: "System Services"
+    check_type: service
+    check_target: bthserv
+    check_value: disabled
+
+  - id: WIN-SRV-03
+    title: "Ensure Computer Browser is disabled"
+    os: windows
+    category: "System Services"
+    check_type: service
+    check_target: Browser
+    check_value: disabled
+
+  - id: WIN-SRV-10
+    title: "Ensure Remote Registry is disabled"
+    os: windows
+    category: "System Services"
+    check_type: service
+    check_target: RemoteRegistry
+    check_value: disabled
+
+  - id: WIN-SRV-24
+    title: "Ensure Xbox Live Auth Manager is disabled"
+    os: windows
+    category: "System Services"
+    check_type: service
+    check_target: XblAuthManager
+    check_value: disabled

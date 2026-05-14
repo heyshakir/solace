@@ -146,12 +146,54 @@ func (e *HardeningEngine) EvaluateRules() []Result {
 			}
 			if passed {
 					result.Status = "Passed"
-					result.Message = "Policy meets requirement"
+                    result.Message = fmt.Sprintf("Policy meets requirement (Current: %s)", actualVal)					
 			} else {
 					result.Status = "Failed"
-					result.Message = "Policy does not meet requirement"
+					result.Message = fmt.Sprintf("Expected %s, but found %s", rule.CheckValue, actualVal)
 			}
 
+		case CheckTypeRegistry:
+			// Target format: "PATH|KEY"
+			parts := strings.Split(rule.CheckTarget, "|")
+			if len(parts) != 2 {
+				result.Status = "Error"
+				result.Message = "Invalid registry target format"
+				break
+			}
+			actualVal, err := e.osEngine.GetRegistryValue(parts[0], parts[1])
+			if err != nil {
+                // If registry key doesn't exist, it means policy isn't configured
+                result.Status = "Failed"
+                result.Status = "Error"
+                result.CurrentValue = "Not Set"
+                result.Message = "Registry value is not configured"
+			} else {
+				result.CurrentValue = actualVal
+				if actualVal == rule.CheckValue {
+					result.Status = "Passed"
+					result.Message = fmt.Sprintf("Registry value matches policy (%s)", actualVal)
+				} else {
+					result.Status = "Failed"
+					result.Message = fmt.Sprintf("Expected %s, but found %s", rule.CheckValue, actualVal)
+				}
+			}
+
+		case CheckTypeService:
+			status, err := e.osEngine.CheckServiceStatus(rule.CheckTarget)
+			if err != nil {
+				result.Status = "Error"
+				result.Message = err.Error()
+			} else {
+				result.CurrentValue = status
+				if status == rule.CheckValue || (rule.CheckValue == "disabled" && (status == "stopped" || status == "not_found")) {
+					result.Status = "Passed"
+					result.Message = fmt.Sprintf("Service is %s", status)
+				} else {
+					result.Status = "Failed"
+					result.Message = fmt.Sprintf("Service is %s (Expected: %s)", status, rule.CheckValue)
+				}
+			}
+			
 		default:
 			result.Status = "Error"
 			result.Message = fmt.Sprintf("Unknown check_type: %s", rule.CheckType)

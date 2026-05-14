@@ -1,0 +1,24 @@
+rules:
+  - id: WIN-UAC-01
+    title: "Ensure UAC: Admin Approval Mode for the Built-in Administrator is Enabled"
+    os: windows
+    category: "User Account Control"
+    check_type: registry
+    check_target: "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System|FilterAdministratorToken"
+    check_value: "1"
+
+  - id: WIN-UAC-05
+    title: "Ensure UAC: Run all administrators in Admin Approval Mode is Enabled"
+    os: windows
+    category: "User Account Control"
+    check_type: registry
+    check_target: "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System|EnableLUA"
+    check_value: "1"
+
+  - id: WIN-UAC-06
+    title: "Ensure UAC: Switch to the secure desktop when prompting for elevation is Enabled"
+    os: windows
+    category: "User Account Control"
+    check_type: registry
+    check_target: "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System|PromptOnSecureDesktop"
+    check_value: "1"

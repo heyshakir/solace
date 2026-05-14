@@ -42,20 +42,20 @@ func main() {
 	failed := 0
 
 	// print results.
-	fmt.Printf("\n%-15s | %-10s | %s\n", "RULE ID", "STATUS", "MESSAGE")
-	fmt.Println("-------------------------------------------------------------------------")
+	fmt.Printf("\n%-13s | %-8s | %s\n", "RULE ID", "STATUS", "MESSAGE")
+	fmt.Println("--------------------------------------------------------------------------------")
 	for _, res := range results {
 		if res.Status == "Passed" {
 			passed++
-			fmt.Printf("✔ %-13s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
+			fmt.Printf("✔ %-11s | %-8s | %s\n", res.RuleID, res.Status, res.Message)
 		} else if res.Status == "Failed" {
 			failed++
-			fmt.Printf("✖ %-13s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
+			fmt.Printf("✖ %-11s | %-8s | %s\n", res.RuleID, res.Status, res.Message)
 		} else {
-			fmt.Printf("⚠ %-13s | %-10s | %s\033[0m\n", res.RuleID, res.Status, res.Message)
+			fmt.Printf("⚠ %-11s | %-8s | %s\n", res.RuleID, res.Status, res.Message)
 		}
 	}
 
-	fmt.Println("-------------------------------------------------------------------------")
-	fmt.Printf("AUDIT COMPLETE: %d Passed | %d Failed\n", passed, failed)
+	fmt.Println("--------------------------------------------------------------------------------")
+	fmt.Printf("Audit Complete: %d Passed, %d Failed\n", passed, failed)
 }

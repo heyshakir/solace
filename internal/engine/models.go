@@ -37,4 +37,9 @@ const (
 
 	// windows specific
 	CheckTypeSecedit      CheckType = "secedit"
+	CheckTypeRegistry     CheckType = "registry" // windows registry
+
+	// service and command checks (generic, can be implemented per OS)
+	CheckTypeService      CheckType = "service"
+	CheckTypeCommand      CheckType = "command"
 )
